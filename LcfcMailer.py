@@ -17,6 +17,7 @@ Data           Author        Version    Description
 2020/05/20     dahai.zhou    1.01       Support multi-attachment
                                         Add author name
 2020/06/15     dahai.zhou    1.02       Generate template script if not exist
+2020/06/17     dahai.zhou    1.03       Optimize
 (please search and modify tool_version and tool_release_date if update version)
 """
 
@@ -28,8 +29,8 @@ import sys
 import os
 from LcfcGetRawFileLib import lcfc_get_raw_file
 
-tool_version = 'V1.02'
-tool_release_date = '2020/06/16'
+tool_version = 'V1.03'
+tool_release_date = '2020/06/17'
 
 # 全局变量区, 不要关心他们的值, 后面会被覆盖掉
 mail_addressee = 'dahai.zhou;'  # 收件人邮箱列表
@@ -40,8 +41,7 @@ mail_content = 'html format content'  # 正文
 mail_attachment_path = [r"D:\Outlook.txt"]  # 附件列表
 
 
-def send_email():
-    o = win32.Dispatch("outlook.Application")
+def send_email(o):
     mail = o.CreateItem(0)
     mail.To = '' if pd.isna(mail_addressee) else mail_addressee
     mail.CC = '' if pd.isna(mail_cc) else mail_cc
@@ -102,10 +102,12 @@ for i in df.index:
 
     if first_in:
         first_in = False
-        print("找到脚本并解析成功, 即将开始发送邮件, 按任意键开始发送, 关闭程序可以取消发送")
+        print("找到脚本并解析成功, 即将开始发送邮件, 请确保Outlook处于打开状态\n按任意键开始发送, 关闭程序可以取消发送")
         os.system("pause")
-    send_email()
+    outlook = win32.Dispatch("outlook.Application")
+    send_email(outlook)
     print("发送邮件%d成功!" % i)
+    # We will not exit Outlook because it should be always opened for the most
     time.sleep(1)
 
 print('总共发送了%d封邮件' % len(df))
