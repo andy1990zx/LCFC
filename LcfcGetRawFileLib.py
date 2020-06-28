@@ -1,7 +1,7 @@
 """
 BSD 2-Clause License
 
-Copyright (c) 2020, Sea Zhou, WeChat: uefi64
+Copyright (c) 2020, Sea Zhou (WeChat: uefi64)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
